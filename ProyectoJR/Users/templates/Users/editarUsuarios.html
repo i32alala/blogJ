@@ -1,0 +1,67 @@
+	{% extends 'base.html' %}
+	
+		{% block content %}
+			
+			{% if user.is_superuser %}
+			<div class="row" style="margin-left:5px;margin-right:5px;">
+			<div class='col-xs-24 col-sm-12 col-md-12 col-lg-12'>			
+				<h2>Usuarios</h2>				
+								
+			
+			{% if usuarios %}
+			
+				<div class='main section' id='main' style="margin-top:10px;">
+					<div class='widget Blog' id='Blog1'>
+						<div id='list-main'>
+						
+							<table class="table table-bordered table-striped">
+							<tr>
+							<th style="text-align:center;">Id</th>
+							<th>Username</th>
+							<th>Tipo</th>								
+							<th style="text-align:center;">Borrar</th>	
+							</tr>
+							{% for c in usuarios %}
+								<tr>
+								<td style="text-align:center;">{{ c.id }}</td>
+								<td><a href="{% url 'users:editarUsuario' c.id %}">{{ c.username }}</a></td>
+								<td>	{% if c.is_superuser %}
+									Administrador									
+									{% elif c.is_staff %}
+									Autor									
+									{% else %}
+									Invitado									
+									{% endif %}
+								</td>
+								<td style="text-align:center;"><a onclick="return confirm('¿ Deseas borrar este usuario ?')" href="{% url 'users:borrarUsuario' c.id %}"><span style="color:#f44336;" class="glyphicon glyphicon-trash" aria-hidden="true"></span></a></td>
+								</tr>
+							{% endfor %}
+							</table>
+						
+						</div>
+						
+					</div>
+				
+		      <ul class="pagination" style="margin-top:0px;margin-bottom:10px;">
+			  {% if usuarios.has_previous %}
+			      <li><a href="?page={{ usuarios.previous_page_number }}">Anterior</a></li>
+			  {% endif %}
+			  {% for pg in usuarios.paginator.page_range %}
+			      {% if usuarios.number == pg %}
+				  <li class="active"><a href="?page={{ pg }}">{{ pg }}</a></li>
+			      {% else %}
+				  <li><a href="?page={{ pg }}">{{ pg }}</a></li>
+			      {% endif %}
+			  {% endfor %}
+			  {% if usuarios.has_next %}
+			      <li><a href="?page={{ usuarios.next_page_number }}">Siguiente</a></li>
+			  {% endif %}
+		      </ul>
+		      
+		      </div>
+				<!-- END Loop -->
+		      </div>	
+			{% endif %}
+			</div> 
+			{% endif %} 
+		 {% endblock content %}	

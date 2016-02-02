@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block login %}
+	<div style="margin: 0 auto; display:table;">
+	<style type="text/css">
+	      
+	      .form-signin {
+		max-width: 300px;
+		padding: 19px 29px 29px;
+		margin: 0 auto 20px;
+		background-color: #fff;
+		border: 1px solid #e5e5e5;
+		-webkit-border-radius: 5px;
+		   -moz-border-radius: 5px;
+		        border-radius: 5px;
+		-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+		   -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+		        box-shadow: 0 1px 2px rgba(0,0,0,.05);
+	      }
+	      .form-signin .form-signin-heading,
+	      .form-signin .checkbox {
+		margin-bottom: 10px;
+	      }
+	      .form-signin input[type="text"],
+	      .form-signin input[type="password"] {
+		font-size: 16px;
+		height: auto;
+		margin-bottom: 15px;
+		padding: 7px 9px;
+		background-color: #ffffff !important;
+		border: 1px solid #cccccc;
+	      }
+    </style>
+				
+		<form class="form-signin" action='' method="POST">
+			{% csrf_token %}	
+			<h2 class="form-signin-heading">Login</h2>
+			<input name="username" type="text" class="input-block-level" placeholder="Nombre de Usuario">
+			<input name="password" type="password" class="input-block-level" placeholder="Password">
+			<label class="checkbox" style="margin-left:20px;font-weight:100">
+				<input type="checkbox" value="remember-me"> Recuerdame
+			</label>
+			{% if form.errors %}
+			    {% for field in form %}
+				{% for error in field.errors %}
+				    <div class="alert alert-danger">
+					{{ error|escape }}
+				    </div>
+				{% endfor %}
+			    {% endfor %}
+			    {% for error in form.non_field_errors %}
+				<div class="alert alert-danger">
+				    {{ error|escape }}
+				</div>
+			    {% endfor %}
+			{% endif %}				
+			<button class="btn btn-large btn-primary" type="submit" style="width:100%">Entrar</button>
+			<label style="margin-top: 10px;font-weight:100;">
+				<a href="{% url 'users:registro' %}">Registrate</a>
+				<a href="" style="margin-left: 25px;">¿Olvido de contraseña?</a>				
+			</label>
+		</form>
+      
+	</div>
+{% endblock %}

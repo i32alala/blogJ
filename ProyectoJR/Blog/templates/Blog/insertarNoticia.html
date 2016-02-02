@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+	
+{% block formInsertar %}
+	<h2>Insertar Noticia</h2>
+	<form id="form" method="POST" enctype="multipart/form-data" action="" style="background-color:white;padding:20px;border-radius:5px;margin-bottom:20px;">
+		{% csrf_token %}
+		{{ foobar|safe }}
+		{{form.as_p}}
+		<button class="btn btn-large btn-primary" type="submit">Publicar</button>
+	</form>
+	<div class="clear"></div>
+{% endblock %}
+

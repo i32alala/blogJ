@@ -1,0 +1,182 @@
+{% load static %}
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang='es'>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>
+			Blog de Jesús Río
+		</title>
+		<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
+		<meta content='blogger' name='generator'/>
+
+		<!--[if IE]> <script> (function() { var html5 = ("abbr,article,aside,audio,canvas,datalist,details," + "figure,footer,header,hgroup,mark,menu,meter,nav,output," + "progress,section,time,video").split(','); for (var i = 0; i < html5.length; i++) { document.createElement(html5[i]); } try { document.execCommand('BackgroundImageCache', false, true); } catch(e) {} })(); </script> <![endif]-->
+		<link href='http://fonts.googleapis.com/css?family=Fauna+One|Roboto|Pacifico' rel='stylesheet' type='text/css'/>
+
+		
+		<link type='text/css' rel='stylesheet' href="{% static "css/bootstrap.css" %}" />
+		<link type='text/css' rel='stylesheet' href="{% static "css/style.css" %}" />
+		<link type='text/css' rel='stylesheet' href="{% static "css/bootstrap-combined.min.css" %}" />
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		<script src="{% static "js/bootstrap.js" %}"></script>
+		<script src="{% static "js/1.js" %}"></script>
+		<script src="{% static "js/2.js" %}"></script>
+		<script src="{% static "js/0.js" %}"></script>
+		<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js' type='text/javascript'></script>
+
+	</head>
+	<body>
+		<nav class='navbar navbar-default main-top-nav' role='navigation'>
+			<div class='container'>
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class='navbar-header'>
+					<a class='navbar-brand' href='/'>
+					<i class='fa fa-home'></i>
+					<h1 class='h-title' style="color:white;font-size:15px;margin-top: 10px;margin-left: 35px;">
+						Blog Jesús Río
+					</h1>
+					</a>
+					<button class='navbar-toggle' data-target='#bs-example-navbar-collapse-1' data-toggle='collapse' type='button'>
+					<span class='sr-only'>
+					Toggle navigation
+					</span>
+					<span class='icon-bar'>
+					</span>
+					<span class='icon-bar'>
+					</span>
+					<span class='icon-bar'>
+					</span>
+					</button>
+				</div>
+				<script>
+				(function($){
+	$(document).ready(function(){
+		$('ul.dropdown-menu [data-toggle=dropdown]').on('click', function(event) {
+			event.preventDefault();
+			event.stopPropagation();
+			$(this).parent().siblings().removeClass('open');
+			$(this).parent().toggleClass('open');
+		});
+	});
+})(jQuery);
+				</script>
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class='collapse navbar-collapse' id='bs-example-navbar-collapse-1'>
+					<ul class='nav navbar-nav'>						
+						<li style="margin-top: 5px;">
+							<a href='/'>
+							Inicio
+							</a>
+						</li>
+						{% if not user.is_authenticated %}
+						<li style="margin-top: 5px;">
+							<a href='{% url 'users:login' %}'>
+							Login
+							</a>
+						</li>
+						{% endif %}
+						{% if user.is_authenticated %}
+						<li class="" style="margin-top:5px;"><a href="#" class="has-submenu" aria-expanded="false">
+							{{ user.username }}
+							<span class="caret"></span>
+							</a>
+							  <ul class="dropdown-menu"  aria-expanded="false" style="width: auto; display: none;">
+								{% if user.is_staff or user.is_superuser %}
+								 <li>
+								 <a href="#" class="has-submenu" aria-expanded="false">
+									 Entradas 
+									 <span style="margin-top: 5px;float: right;" class="caret-right"></span>
+								 </a>
+                						  <ul class="dropdown-menu" aria-expanded="false">
+								            <li><a href="{% url 'urlNoticias:EditarNoticias' %}">Noticias</a></li>
+								             <li><a href="{% url 'Ccategoria' %}">Categorias</a></li>
+								             {% if user.is_superuser %}
+								              <li><a href="{% url 'comentario' %}">Comentarios</a></li>
+								              {% endif %}
+								        </ul>
+								</li>								
+								{% endif %}
+								{% if user.is_superuser %}
+								<li>
+									<a href='{% url 'users:editarUsuarios' %}'>
+									Usuarios
+									</a>
+								</li>								
+								{% endif %}
+								<li>
+									<a href='{% url 'users:editarPerfil' %}'>
+									Editar perfil
+									</a>
+								</li>
+                              <li>
+									<a href='{% url 'users:cambiarPass' %}'>
+									Cambiar contraseña
+									</a>
+								</li>
+                                  <li>
+									<a href='{% url 'users:logout' %}'>
+									Salir
+									</a>
+								</li>
+							</ul>
+						</li>
+						{% endif %}
+					</ul>							
+					
+				</div>
+				<!-- /.navbar-collapse -->
+			</div>
+		</nav>
+		<div class='clearfix'></div>
+		
+		<div class='clearfix'></div>
+		<div class='container'>
+			<div class="row" style="margin-left:5px;margin-right:5px;">
+
+				{% block content %}
+                {% endblock %}
+
+                {% block sidebar %}
+                {% endblock %}
+
+                {% block formInsertar %}
+                {% endblock %}
+
+                {% block contentCat %}
+                {% endblock %}   
+
+                {% block contentAut %}
+                {% endblock %} 
+
+                {% block contentSearch %}
+                {% endblock %} 
+
+				{% block login %}
+				{% endblock %}
+
+
+			</div>
+		</div>
+		</div>
+		<!-- END Container -->
+		<div id='footer' style="background:#fff;border-top: 1px solid #ddd;margin-top:20px;">
+			<div class="container">
+			<p class='footer-link' style="margin-bottom: 0px;border-top: 0px;">
+				&#169; 
+				<a href='https://twitter.com/JesusRio1991' target="_blank">
+				<strong>
+				Jesús Río
+				</strong>
+				</a>
+				2015 . Desarrollado por 
+				<a href='https://twitter.com/JesusRio1991' rtarget="_blank">
+				Jesús Río
+				</a>
+			</p>
+		</div>
+		</div>
+		<!-- END Footer -->
+	</body>
+</html>

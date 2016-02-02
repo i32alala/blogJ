@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+	
+{% block formInsertar %}
+	<div style="margin: 0 auto; display:table;">
+	<style type="text/css">
+	      
+	      .form-signin {
+		max-width: 300px;
+		padding: 19px 29px 29px;
+		margin: 0 auto 20px;
+		background-color: #fff;
+		border: 1px solid #e5e5e5;
+		-webkit-border-radius: 5px;
+		   -moz-border-radius: 5px;
+		        border-radius: 5px;
+		-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+		   -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+		        box-shadow: 0 1px 2px rgba(0,0,0,.05);
+	      }
+	      .form-signin .form-signin-heading,
+	      .form-signin .checkbox {
+		margin-bottom: 10px;
+	      }
+	      .form-signin input[type="text"],
+	      .form-signin input[type="password"],
+      	      .form-signin input[type="email"] {
+		font-size: 16px;
+		height: auto;
+		margin-bottom: 15px;
+		padding: 7px 9px;
+		background-color: #ffffff !important;
+		border: 1px solid #cccccc;
+	      }
+    </style>
+    <h2>Editar Usuario</h2>
+	<form class="form-signin" action='' method="POST">
+		{% csrf_token %}
+		{{form.as_p}}
+		<button class="btn btn-large btn-primary" type="submit">Editar</button>
+	</form>
+	</div>
+	<div class="clear"></div>
+{% endblock %}
+

@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+	
+{% block formInsertar %}
+	<h2>Insertar Categoria</h2>
+	<form id="form" method="POST" enctype="multipart/form-data" action="" style="background-color:white;padding:20px;border-radius:5px;margin-bottom:20px;">
+		{% csrf_token %}
+		{{form.as_p}}
+		<button class="btn btn-large btn-primary" type="submit">Insertar</button>
+	</form>
+	<div class="clear"></div>
+{% endblock %}
+

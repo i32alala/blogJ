@@ -1,0 +1,216 @@
+	{% extends 'base.html' %}
+	
+		{% block content %}
+
+		
+			<div class='col-xs-12 col-sm-8 col-md-8 col-lg-8'>
+				<div class='main section' id='main'>
+					<div class='widget Blog' id='Blog1'>
+						<div id='list-main'>
+						{% if noticia %}
+							<div class='post-div'>
+								<h2 class='jqmaintitle'>
+									{{noticia.Titulo}}
+									{% if noticia.SubTitulo %}
+                                <p style="padding-bottom: 0px;font-size: 15px;margin-bottom: -10px;"><i>"{{ noticia.SubTitulo }}"</i></p>
+                                {% endif %}
+								</h2>
+								<div class='post-header-home'>
+									<span class='post-author vcard'>
+									<i class='fa fa-user'></i>
+									<span style="color:#666" class="glyphicon glyphicon-user" aria-hidden="true"></span>
+									Creado por 
+									<a href='{% url 'autor' noticia.Autor.id %}' style="color:#666">
+										{{noticia.Autor}}
+									</a>
+									{% if noticia.Categoria.all %}
+									en
+									{% for cate in noticia.Categoria.all %}
+									<a href='{% url 'filtro_categoria' cate.id %}' style="color:#666">
+										{{cate.Nombre}}
+									</a>
+									{% endfor %}
+									{% endif %}	
+									</span>
+									</span>
+								</div>
+								<div class='homapge-thumb'>
+									<div class='post hentry' itemprop='blogPost' itemscope='itemscope' itemtype='http://schema.org/BlogPosting'>
+										
+										
+											{% if noticia.Imagen %}											
+		<a href="{{noticia.Imagen.url}}"> <img  src="{{noticia.Imagen.url}}" class="img-responsive" style="width:100%;max-height:300px;" /></a>
+											{% endif %}
+											   <p style="text-align:justify;"> {{ noticia.Contenido|safe }}</p>
+											
+										
+										
+									</div>
+								</div>
+								<div class='post-header-label'>
+									<span class='post-timestamp'>
+									<span style="color:#666;" class="glyphicon glyphicon-time" aria-hidden="true"></span>
+									{{noticia.Fecha}}
+									</span>
+									<span class='post-labels'>
+									<span class="glyphicon glyphicon-tags" aria-hidden="true" style="margin-left:10px;margin-right:5px;"></span>
+									<!-- <a href='' rel='tag'> -->
+									{{noticia.Etiquetas}}
+									<!-- </a> -->
+									</span>
+								</div>
+							</div>
+							<div class='sidebox'>
+					<div class='sidebar section' id='sidebar'>
+						<div class='widget Label' id='Label2'>
+							<h2 class='title'>
+								Comentarios
+							</h2>	
+							<div class="well" style="margin-top: -10px;border-radius: 0px;margin-right: -1px;">
+							    <h4>Deja un Comentario:</h4>
+							    <form role="form" action="" method="POST">
+							    {% csrf_token %}
+							    {% if not user.is_authenticated %}
+								<div class="form-group">
+								    <input class="form-control" type="text" name="Nombre" placeholder="Nombre" />
+								</div>
+								<div class="form-group">
+								    <input class="form-control" type="text" name="Apellidos" placeholder="Apellidos" />
+								</div>
+								<div class="form-group">
+								    <input class="form-control" type="text" name="Email" placeholder="Email" />
+								</div>
+								{% endif %}
+								<div class="form-group">
+								    <textarea class="form-control" name="Texto" placeholder="Escriba aquí" rows="3"></textarea>
+								</div>
+								{% if form.errors %}
+								    {% for field in form %}
+									{% for error in field.errors %}
+									    <div class="alert alert-danger">
+										{{ error|escape }}
+									    </div>
+									{% endfor %}
+								    {% endfor %}
+								    {% for error in form.non_field_errors %}
+									<div class="alert alert-danger">
+									    {{ error|escape }}
+									</div>
+								    {% endfor %}
+								{% endif %}	
+								<button type="submit" class="btn btn-primary">Enviar</button>
+							    </form>
+							</div>			
+							<div class='widget-content list-label-widget-content'>
+								{%if comentarios%}
+								{% for c in comentarios %}
+								<div class="media">
+								    <a class="pull-left">
+									<img width="64px" class="media-object" src="http://engineeringchallenges.org/common/images/person/empty-person.png" alt="">
+								    </a>
+								    <div class="media-body">
+									<h4 class="media-heading">{{ c.Nombre }} {{ c.Apellidos }}
+									    <small>{{ c.Fecha }}</small>
+									</h4>
+									{{ c.Texto }}
+								    </div>
+								</div>
+								<hr />
+								{% endfor %}								
+								{% endif %}									
+							</div>
+							</div>	
+							</div>
+							<ul class="pagination" style="margin-top:0px;margin-bottom:10px;">
+								    {% if comentarios.has_previous %}
+									<li><a href="?page={{ comentarios.previous_page_number }}">Anterior</a></li>
+								    {% endif %}
+								    {% for pg in comentarios.paginator.page_range %}
+									{% if comentarios.number == pg %}
+									    <li class="active"><a href="?page={{ pg }}">{{ pg }}</a></li>
+									{% else %}
+									    <li><a href="?page={{ pg }}">{{ pg }}</a></li>
+									{% endif %}
+								    {% endfor %}
+								    {% if comentarios.has_next %}
+									<li><a href="?page={{ comentarios.next_page_number }}">Siguiente</a></li>
+								    {% endif %}
+								</ul>							
+											
+					
+				</div>
+							{% else %}
+							
+							<h1 style="text-align:center;font-size:150px">404</h1>
+							<h1 style="text-align:center;font-size:30px;margin-top:-30px;">Página no encontrada</h1>
+							
+							{% endif %}
+						</div>
+						
+					</div>
+				</div>
+				<!-- END Loop -->				
+			</div>
+			
+			<div class='col-xs-12 col-sm-4 col-md-4 col-lg-4 hide-home-sidebar'>
+				<div class='sidebox'>
+					<div class='sidebar section' id='sidebar'>
+					<div class='widget Label' id='Label2'>
+							<h2 class='title'>
+								Busqueda
+							</h2>							
+							<div class='widget-content list-label-widget-content'>
+								
+										<form action='/search/' class='navbar-form' method='GET' role='search'>
+						{% csrf_token %}
+							<input class='form-control form-main-search' name='q' placeholder='Buscar ...' type='text' style="width:98%"/>
+						<button class='btn btn-def' type='submit'></button>
+					</form>
+									
+							</div>							
+						</div>
+						{% if autores %}
+						<div class='widget Label' id='Label2'>
+							<h2 class='title'>
+								Autores
+							</h2>							
+							<div class='widget-content list-label-widget-content'>
+								<ul>
+									{% for au in autores %}
+									<li>
+										<a href='{% url 'autor' au.id %}'>
+										{{au.username}}
+										</a>
+									</li>
+									{% endfor %}
+									
+								</ul>
+							</div>							
+						</div>
+						{% endif %}
+						{% if categorias %}
+						<div class='widget Label' id='Label1'>
+							<h2>
+								Categorias
+							</h2>
+							<div class='widget-content list-label-widget-content'>
+								<ul>
+									{% for cat in categorias %}
+									<li>
+										<a href='{% url 'filtro_categoria' cat.id %}'>
+										{{cat.Nombre}}
+										</a>
+									</li>
+									{% endfor %}
+									
+								</ul>
+							</div>							
+						</div>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+			
+			
+
+		 {% endblock content %}	

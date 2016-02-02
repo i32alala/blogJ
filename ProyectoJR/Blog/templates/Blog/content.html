@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+    <div class='col-xs-12 col-sm-8 col-md-8 col-lg-8'>
+        <div class='main section' id='main'>
+            <div class='widget Blog' id='Blog1'>
+                <div id='list-main'>
+                    {% if noticias %}
+                        {% for noticia in noticias %}
+                            <div class='post-div'>
+                                <h2 class='jqmaintitle'>
+                                    <a href='{% url 'urlNoticias:MostrarNoticia' noticia.id %}'>
+                                        {{ noticia.Titulo }}
+                                    </a>                                
+                                {% if noticia.SubTitulo %}
+                                <p style="padding-bottom: 0px;font-size: 15px;margin-bottom: -10px;"><i>"{{ noticia.SubTitulo }}"</i></p>
+                                {% endif %}
+                                </h2>
+                                <div class='post-header-home'>
+									<span class='post-author vcard'>
+									<span style="color:#666;" class="glyphicon glyphicon-user"
+                                          aria-hidden="true"></span>
+									Creado por 
+									<a href='{% url 'autor' noticia.Autor.id %}' style="color:#666">
+                                        {{ noticia.Autor }}
+                                    </a>
+                                        {% if noticia.Categoria.all %}
+                                            en
+                                            {% for cate in noticia.Categoria.all %}
+                                                <a href='{% url 'filtro_categoria' cate.id %}' style="color:#666">
+                                                    {{ cate.Nombre }}. 
+                                                </a>
+                                            {% endfor %}
+                                        {% endif %}
+									</span>
+                                </div>
+                                <div class='homapge-thumb'>
+                                    <div class='post hentry' itemprop='blogPost' itemscope='itemscope'
+                                         itemtype='http://schema.org/BlogPosting'>
+
+                                        <div id='summary301858911604517742'>
+                                            <div dir="ltr" style="text-align: left;" trbidi="on">
+                                                {% if noticia.Imagen %}
+                                                    <a href="{{ noticia.Imagen.url }}" imageanchor="1"
+                                                       style="float:left;margin-right: 1em;"><img
+                                                            src="{{ noticia.Imagen.url }}" class="img-responsive"
+                                                            style="width:300px;"/></a>
+                                                {% endif %}
+                                                <p style="text-align:justify;">{{ noticia.Contenido|safe|truncatewords_html:"100" }}</p>
+                                            </div>
+                                        </div>
+
+                                        <div class='s-clear'></div>
+                                        <div class='rmlink'>
+                                            <a href='{% url 'urlNoticias:MostrarNoticia' noticia.id %}'>
+                                                Leer más
+                                            </a>
+                                        </div>
+                                        <div class='s-clear'></div>
+                                    </div>
+                                </div>
+                                <div class='post-header-label'>
+									<span class='post-timestamp'>
+									<span style="color:#666;" class="glyphicon glyphicon-time"
+                                          aria-hidden="true"></span>
+									{{ noticia.Fecha }}
+									</span>
+                                    {% if noticia.Etiquetas %}
+                                        <span class='post-labels'>
+									<span class="glyphicon glyphicon-tags" aria-hidden="true"
+                                          style="margin-left:10px;margin-right:5px;"></span>
+										{{ noticia.Etiquetas }}
+									</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <ul class="pagination" style="margin-top:0px;margin-bottom:10px;">
+                            {% if noticias.has_previous %}
+                                <li><a href="?{{query.urlencode}}&amp;page={{ noticias.previous_page_number }}">Anterior</a></li>
+                            {% endif %}
+                            {% for pg in noticias.paginator.page_range %}
+                                {% if noticias.number == pg %}
+                                    <li class="active"><a href="?{{query.urlencode}}&amp;page={{ pg }}">{{ pg }}</a></li>
+                                {% else %}
+                                    <li><a href="?{{query.urlencode}}&amp;page={{ pg }}">{{ pg }}</a></li>
+                                {% endif %}
+                            {% endfor %}
+                            {% if noticias.has_next %}
+                                <li><a href="?{{query.urlencode}}&amp;page={{ noticias.next_page_number }}">Siguiente</a></li>
+                            {% endif %}
+                        </ul>
+                    {% else %}
+
+                        <h1 style="text-align:center;font-size:30px;">¡No hay entradas!</h1>
+
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+        <!-- END Loop -->
+    </div>
+
+    <div class='col-xs-12 col-sm-4 col-md-4 col-lg-4 hide-home-sidebar'>
+        <div class='sidebox'>
+            <div class='sidebar section' id='sidebar'>
+                <div class='widget Label' id='Label2'>
+                    <h2 class='title'>
+                        Busqueda
+                    </h2>
+                    <div class='widget-content list-label-widget-content'>
+
+                        <form action='/search/' class='navbar-form' method='GET' role='search'>
+                            {% csrf_token %}
+                            <input class='form-control form-main-search' name='q' placeholder='Buscar ...' type='text'
+                                   style="width:98%"/>
+                            <button class='btn btn-def' type='submit'></button>
+                        </form>
+
+                    </div>
+                </div>
+                {% if autores %}
+                    <div class='widget Label' id='Label2'>
+                        <h2 class='title'>
+                            Autores
+                        </h2>
+                        <div class='widget-content list-label-widget-content'>
+                            <ul>
+                                {% for au in autores %}
+                                    <li>
+                                        <a href="{% url 'autor' au.id %}">
+                                            {{ au.username }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+
+                            </ul>
+                        </div>
+                    </div>
+                {% endif %}
+                {% if categorias %}
+                    <div class='widget Label' id='Label1'>
+                        <h2>
+                            Categorias
+                        </h2>
+                        <div class='widget-content list-label-widget-content'>
+                            <ul>
+                                {% for cat in categorias %}
+                                    <li>
+                                        <a href="{% url 'filtro_categoria' cat.id %}">
+                                            {{ cat.Nombre }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+
+                            </ul>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
